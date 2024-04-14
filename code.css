@@ -1,0 +1,37 @@
+body {
+  font-family: Calibri, sans-serif; /* Establecer la tipografía Calibri como predeterminada */
+  text-align: center; /* Centrar el texto */
+}
+
+h2 {
+  font-size: 28px; /* Tamaño de fuente para h2 */
+  margin-bottom: 10px; /* Espacio en la parte inferior del h2 */
+}
+
+h3 {
+  font-size: 24px; /* Tamaño de fuente para h3 */
+  margin-top: 5px; /* Espacio en la parte superior del h3 */
+}
+
+.map-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.legend {
+  text-align: left; /* Alinea el texto a la izquierda */
+  margin-left: 10px; /* Espacio entre el mapa y la leyenda */
+}
+
+.legend-right {
+  margin-left: auto; /* Mueve la leyenda a la derecha */
+}
+
+/* Estilos adicionales para el dropdown y el botón */
+#community-select {
+  margin-right: 10px;
+}
+
+button {
+  cursor: pointer;
+}
