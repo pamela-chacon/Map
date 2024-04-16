@@ -185,24 +185,25 @@ fetch('https://raw.githubusercontent.com/pamela-chacon/Datasets/main/3oei9-cjvvb
 let communityData = []; // Variable para almacenar los datos de las comunidades
 
 function filterMapByCommunity() {
-
-console.clear();
   const selectedCommunity = document.getElementById('community-select').value;
-  // Filtrar y mostrar solo los marcadores de la comunidad seleccionada
+
+  // Recorrer cada capa en el mapa
   map.eachLayer(layer => {
     if (layer instanceof L.Marker) {
       const marker = layer; // Obtener el marcador actual
+
       // Verificar si el marcador pertenece a la comunidad seleccionada
-      //console.log(marker.options.community, selectedCommunity);
       if (marker.options.community === selectedCommunity) {
         // Mostrar el marcador si pertenece a la comunidad seleccionada
-        //map.addLayer(marker);
         marker.setOpacity(1);
+
+        // Centrar el mapa en las coordenadas del marcador
+        map.setView(marker.getLatLng(), 10); // Ajusta el nivel de zoom (en este caso, 10)
       } else {
         // Ocultar el marcador si no pertenece a la comunidad seleccionada
         marker.setOpacity(0);
-        //map.removeLayer(marker);
       }
     }
   });
 }
+
