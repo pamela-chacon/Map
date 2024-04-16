@@ -42,7 +42,7 @@ fetch('https://raw.githubusercontent.com/pamela-chacon/Datasets/main/3oei9-cjvvb
         popupAnchor: [1, -34],
       });
       
-      const marker = L.marker([parseFloat(point.latitude), parseFloat(point.longitude)], { icon: customIcon, community: point.community_name })
+      const marker = L.marker([parseFloat(point.latitude), parseFloat(point.longitude)], { icon: customIcon, community: point.community_name, wave:point.wave })
         marker.addTo(map)
         .bindPopup(`Community: ${point.community_name}, Wave: ${point.wave}`); // Mostrar el nombre de la comunidad en el popup
         
@@ -81,10 +81,10 @@ fetch('https://raw.githubusercontent.com/pamela-chacon/Datasets/main/3oei9-cjvvb
   </style>
   <h4>Legend</h4>
   <ul>
-    <li><img src="https://raw.githubusercontent.com/pamela-chacon/Picture/main/red.png"> Wave 1</li>
-    <li><img src="https://raw.githubusercontent.com/pamela-chacon/Picture/main/blue.png"> Wave 2</li>
-    <li><img src="https://raw.githubusercontent.com/pamela-chacon/Picture/main/black.png"> Wave 3</li>
-    <li><img src="https://raw.githubusercontent.com/pamela-chacon/Picture/main/white.png"> Not visited</li>
+    <li id="wave1" class="legend-item"><img src="https://raw.githubusercontent.com/pamela-chacon/Picture/main/red.png"> Wave 1</li>
+    <li id="wave2" class="legend-item"><img src="https://raw.githubusercontent.com/pamela-chacon/Picture/main/blue.png"> Wave 2</li>
+    <li id="wave3" class="legend-item"><img src="https://raw.githubusercontent.com/pamela-chacon/Picture/main/black.png"> Wave 3</li>
+    <li id="notVisited" class="legend-item"><img src="https://raw.githubusercontent.com/pamela-chacon/Picture/main/white.png"> Not visited</li>
   </ul>
 `;
 
@@ -206,4 +206,36 @@ function filterMapByCommunity() {
     }
   });
 }
+
+// Función para filtrar marcadores por tipo de wave
+function filterMarkersByWave(waveType) {
+  allMarkers.forEach(marker => {
+    const markerWave = marker.options.wave;
+
+    // Mostrar marcadores si coinciden con el tipo de wave seleccionado
+    if (markerWave === waveType) {
+      marker.setOpacity(1);
+    } else {
+      marker.setOpacity(0);
+    }
+  });
+}
+
+// Event listeners para cada tipo de wave en la leyenda
+document.getElementById('wave1').addEventListener('click', () => {
+  filterMarkersByWave("1");
+});
+
+document.getElementById('wave2').addEventListener('click', () => {
+  filterMarkersByWave("2");
+});
+
+document.getElementById('wave3').addEventListener('click', () => {
+  filterMarkersByWave("3");
+});
+
+document.getElementById('notVisited').addEventListener('click', () => {
+  filterMarkersByWave(""); // Filtrar por "not visited"
+});
+
 
