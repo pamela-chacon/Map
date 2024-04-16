@@ -126,8 +126,8 @@ function createCommunityDropdown(communityNames, countries) {
  
 
   const communityDropdownHTML = `
-    <div>
-      <label for="community-select">Select Community:</label>
+    <div class="dropdown-item">
+      <label for="community-select">Community:<p></p></label>
       <select id="community-select">
         <option value="">-- Choose a Community --</option>
         ${communityNames.map(name => `<option value="${name}">${name}</option>`).join('')}
@@ -136,8 +136,8 @@ function createCommunityDropdown(communityNames, countries) {
   `;
 
   const countryDropdownHTML = `
-    <div>
-      <label for="country-select">Select Country:</label>
+    <div class="dropdown-item">
+      <label for="country-select"><h4>Select by:</h4><p>Country:</p></label>
       <select id="country-select" onchange="updateCommunityOptions(this.value)">
         <option value="">-- Choose a Country --</option>
         ${countries.map(country => `<option value="${country}">${country}</option>`).join('')}
@@ -146,7 +146,7 @@ function createCommunityDropdown(communityNames, countries) {
   `;
 
   const buttonHTML = `
-    <div>
+    <div class="dropdown-item">
       <button onclick="filterMapByCommunity()">Go</button>
     </div>
   `;
