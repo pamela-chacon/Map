@@ -29,6 +29,16 @@ h3 {
   margin-left: auto; /* Mueve la leyenda a la derecha */
 }
 
+/* Estilo para los elementos de la leyenda */
+.legend-item {
+  cursor: pointer; /* Cambia el cursor a un puntero al pasar sobre estos elementos */
+}
+
+/* Estilo adicional para resaltar el cursor */
+.legend-item:hover {
+  text-decoration: underline; /* Opcional: subraya el texto al pasar el cursor sobre los elementos */
+}
+
 /* Estilos adicionales para el dropdown y el botón */
 #community-select {
   margin-right: 10px;
@@ -61,3 +71,4 @@ button:hover {
 select {
   width: 300px; /* Ancho fijo para el elemento select */
 }
+
