@@ -10,6 +10,8 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 25,
 }).addTo(map);
 
+let allMarkers = [];
+
 // Obtener los datos del archivo JSON
 fetch('https://raw.githubusercontent.com/pamela-chacon/Datasets/main/3oei9-cjvvb.json')
   .then(response => response.json())
@@ -40,9 +42,21 @@ fetch('https://raw.githubusercontent.com/pamela-chacon/Datasets/main/3oei9-cjvvb
         popupAnchor: [1, -34],
       });
       
-      L.marker([parseFloat(point.latitude), parseFloat(point.longitude)], { icon: customIcon })
-        .addTo(map)
+      const marker = L.marker([parseFloat(point.latitude), parseFloat(point.longitude)], { icon: customIcon, community: point.community_name })
+        marker.addTo(map)
         .bindPopup(`Community: ${point.community_name}, Wave: ${point.wave}`); // Mostrar el nombre de la comunidad en el popup
+        
+         // Mostrar popup al pasar el mouse sobre el marcador
+        marker.on('mouseover', function (e) {
+          this.openPopup();
+        });
+
+        // Ocultar popup al quitar el mouse del marcador
+        marker.on('mouseout', function (e) {
+          this.closePopup();
+        });
+        
+        allMarkers.push(marker)
          });
                
   })
@@ -76,7 +90,17 @@ fetch('https://raw.githubusercontent.com/pamela-chacon/Datasets/main/3oei9-cjvvb
 
 legendContainer.classList.add('legend-right');
 
-
+////new button
+const showAllButton = document.createElement('button');
+      showAllButton.textContent = 'Show All Communities';
+      showAllButton.addEventListener('click', () => {
+        // Mostrar todos los marcadores en el mapa
+        allMarkers.forEach(marker => {
+          marker.setOpacity(1);
+        });
+      });
+      legendContainer.appendChild(showAllButton);
+///////////////
 
 // Realizar la solicitud fetch para obtener los datos JSON
 fetch('https://raw.githubusercontent.com/pamela-chacon/Datasets/main/3oei9-cjvvb.json')
@@ -161,18 +185,23 @@ fetch('https://raw.githubusercontent.com/pamela-chacon/Datasets/main/3oei9-cjvvb
 let communityData = []; // Variable para almacenar los datos de las comunidades
 
 function filterMapByCommunity() {
+
+console.clear();
   const selectedCommunity = document.getElementById('community-select').value;
   // Filtrar y mostrar solo los marcadores de la comunidad seleccionada
   map.eachLayer(layer => {
     if (layer instanceof L.Marker) {
       const marker = layer; // Obtener el marcador actual
       // Verificar si el marcador pertenece a la comunidad seleccionada
+      //console.log(marker.options.community, selectedCommunity);
       if (marker.options.community === selectedCommunity) {
         // Mostrar el marcador si pertenece a la comunidad seleccionada
-        map.addLayer(marker);
+        //map.addLayer(marker);
+        marker.setOpacity(1);
       } else {
         // Ocultar el marcador si no pertenece a la comunidad seleccionada
-        map.removeLayer(marker);
+        marker.setOpacity(0);
+        //map.removeLayer(marker);
       }
     }
   });
