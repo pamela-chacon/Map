@@ -1,3 +1,6 @@
+/*  
+Thing to consider: Each filter acts separately. Might want to think about how to use multiples. (But generally speaking, this works now.)
+*/
 
 const mapContainer = document.getElementById('map');
 const legendContainer = document.getElementById('legend');
@@ -16,6 +19,14 @@ let allMarkers = [];
 fetch('https://raw.githubusercontent.com/pamela-chacon/Datasets/main/3oei9-cjvvb.json')
   .then(response => response.json())
   .then(data => {
+  	
+    const communityNames = [...new Set(data.map(point => point.community_name))];
+    const countries = [...new Set(data.map(point => point.country))];
+    createCommunityDropdown(communityNames, countries);
+
+    // Guardar los datos para poder usarlos en las funciones posteriores
+    communityData = data;
+    
     // Iterar sobre los datos y añadir marcadores al mapa
     data.forEach(point => {
    
@@ -100,27 +111,6 @@ const showAllButton = document.createElement('button');
         });
       });
       legendContainer.appendChild(showAllButton);
-///////////////
-
-// Realizar la solicitud fetch para obtener los datos JSON
-fetch('https://raw.githubusercontent.com/pamela-chacon/Datasets/main/3oei9-cjvvb.json')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    // Aquí manejamos los datos obtenidos correctamente
-    const communities = new Set(data.map(point => point.community_name));
-    createCommunityDropdown([...communities]); // Llama a una función para crear la lista desplegable
-     // Llama a la función para filtrar el mapa por comunidad
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-    // Aquí puedes manejar el error, por ejemplo, mostrando un mensaje al usuario
-    // o realizando alguna acción adecuada en caso de fallo en la solicitud fetch
-  });
 
 function createCommunityDropdown(communityNames, countries) {
  
@@ -167,31 +157,12 @@ function updateCommunityOptions(selectedCountry) {
   `;
 }
 
-fetch('https://raw.githubusercontent.com/pamela-chacon/Datasets/main/3oei9-cjvvb.json')
-  .then(response => response.json())
-  .then(data => {
-    const communityNames = [...new Set(data.map(point => point.community_name))];
-    const countries = [...new Set(data.map(point => point.country))];
-
-    createCommunityDropdown(communityNames, countries);
-
-    // Guardar los datos para poder usarlos en las funciones posteriores
-    communityData = data;
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-  });
-
 let communityData = []; // Variable para almacenar los datos de las comunidades
 
 function filterMapByCommunity() {
   const selectedCommunity = document.getElementById('community-select').value;
-
-  // Recorrer cada capa en el mapa
-  map.eachLayer(layer => {
-    if (layer instanceof L.Marker) {
-      const marker = layer; // Obtener el marcador actual
-
+			allMarkers.forEach(marker => {
+       
       // Verificar si el marcador pertenece a la comunidad seleccionada
       if (marker.options.community === selectedCommunity) {
         // Mostrar el marcador si pertenece a la comunidad seleccionada
@@ -202,7 +173,7 @@ function filterMapByCommunity() {
       } else {
         // Ocultar el marcador si no pertenece a la comunidad seleccionada
         marker.setOpacity(0);
-      }
+      
     }
   });
 }
